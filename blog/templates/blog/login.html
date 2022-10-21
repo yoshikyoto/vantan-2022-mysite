@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>ログイン</title>
+</head>
+
+<body>
+    <h1>ログイン</h1>
+    <form action="/blog/login" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="ログイン">
+    </form>
+</body>
+</html>

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 
  
@@ -25,3 +26,13 @@ class AccountCreateView(View):
         )
         # 登録完了ページを表示
         return render(request, "blog/register_success.html")
+
+
+# LoginView を継承したうえで、一部設定を変更
+class AccountLoginView(LoginView):
+    """ログインページのテンプレート"""
+    template_name = 'blog/login.html'
+
+    def get_default_redirect_url(self):
+        """ログインに成功した時に飛ばされるURL"""
+        return "/blog"
