@@ -1,0 +1,19 @@
+<html>
+<head>
+    <title>アカウント登録</title>
+</head>
+
+<body>
+    <h1>新規登録</h1>
+    <form action="/blog/register" method="post">
+        {% csrf_token %}
+        <div>
+            Username: <input type="text" name="username">
+        </div>
+        <div>
+            Password: <input type="password" name="password">
+        </div>
+        <input type="submit" value="登録">
+   </form>
+</body>
+</html>
