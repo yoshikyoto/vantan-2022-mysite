@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -46,3 +46,7 @@ class MypageView(LoginRequiredMixin, View):
 
     def get(self, request):
         return render(request, "blog/mypage.html")
+
+
+class AccountLogoutView(LogoutView):
+    template_name = 'blog/logout.html'
