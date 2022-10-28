@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.views import View
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 
  
 def index(request):
@@ -36,3 +37,12 @@ class AccountLoginView(LoginView):
     def get_default_redirect_url(self):
         """ログインに成功した時に飛ばされるURL"""
         return "/blog"
+
+
+# マイページのクラスベースビュー
+# まだログイン制限などは入れていない
+class MypageView(LoginRequiredMixin, View):
+    login_url = '/blog/login'
+
+    def get(self, request):
+        return render(request, "blog/mypage.html")
