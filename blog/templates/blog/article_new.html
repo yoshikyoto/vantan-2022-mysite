@@ -1,0 +1,19 @@
+<html>
+<head>
+    <title>記事編集</title>
+</head>
+
+<body>
+    <h1>記事編集</h1>
+    <form action="/blog/mypage/articles" method="post">
+        {% csrf_token %}
+        <div>
+            <input type="text" name="title" placeholder="タイトル" size="30">
+        </div>
+        <div>
+            <textarea name="body" rows="10" cols="50"></textarea>
+        </div>
+        <input type="submit" value="登録">
+   </form>
+</body>
+</html>
