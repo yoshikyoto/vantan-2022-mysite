@@ -8,7 +8,12 @@ from blog.models import Article
 
  
 def index(request):
-    return render(request, "blog/index.html")
+    # blog_article テーブルの中身を全部取得
+    # articles は Article クラスのオブジェクトが入った配列
+    articles = Article.objects.all()
+    return render(request, "blog/index.html", {
+        "articles": articles,
+    })
 
 def detail(request):
     return HttpResponse("detail page")
