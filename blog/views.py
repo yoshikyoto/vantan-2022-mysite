@@ -51,7 +51,10 @@ class MypageView(LoginRequiredMixin, View):
     login_url = '/blog/login'
 
     def get(self, request):
-        return render(request, "blog/mypage.html")
+        articles = Article.objects.filter(user=request.user)
+        return render(request, "blog/mypage.html", {
+            "articles": articles,
+        })
 
 
 class AccountLogoutView(LogoutView):
