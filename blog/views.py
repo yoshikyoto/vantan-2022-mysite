@@ -80,3 +80,13 @@ class MypageArticleView(LoginRequiredMixin, View):
         )
         article.save()
         return render(request, "blog/article_created.html")
+
+# 記事についての View
+class ArticleView(View):
+    # urls.py の <id> が、 id に入る
+    def get(self, request, id):
+        # get は条件に合致した記事を一つ取得する
+        article = Article.objects.get(id=id)
+        return render(request, "blog/article.html", {
+            "article": article,
+        })
