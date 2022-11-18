@@ -5,12 +5,18 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from blog.models import Article
+from blog.qiita import QiitaApiClient
 
  
 def index(request):
     # blog_article テーブルの中身を全部取得
     # articles は Article クラスのオブジェクトが入った配列
     articles = Article.objects.all()
+
+    # qiita API へのリクエスト処理を追加
+    qiita_api = QiitaApiClient()
+    qiita_api.get_django_articles() 
+
     return render(request, "blog/index.html", {
         "articles": articles,
     })
