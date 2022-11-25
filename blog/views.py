@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
@@ -110,3 +110,28 @@ class ArticleView(View):
         return render(request, "blog/article.html", {
             "article": article,
         })
+
+
+class ArticleApiView(View):
+    
+    def get(self, request):
+        # DB から Article を取得
+        # articles は blog.models.Article のリスト
+        articles = Article.objects.all()
+
+        # Article オブジェクトのリストを、dict の list に変換
+        dict_articles = []
+        for article in articles:
+            # Article のオブジェクトを dict に変換
+            dict_article = {
+                "id": article.id,
+                "title": article.title,
+                "body": article.body,
+            }
+            # 変換後の dict を list に追加
+            dict_articles.append(dict_article)
+
+        json = {
+            "articles": dict_articles,
+        }
+        return JsonResponse(json)
