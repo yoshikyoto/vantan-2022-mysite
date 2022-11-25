@@ -9,8 +9,26 @@ class QiitaApiClient:
             "https://qiita.com/api/v2/tags/django/items",
         )
         
-        # とりあえず print してみる
-        # response.json() で json 形式のレスポンスの中身が見られる
+        # 配列の初期化
+        qiita_articles = []
+
+        # json は list 型（qiitaの投稿のリスト）
         json = response.json()
-        qiita_article = json[0]
-        print(qiita_article["title"])
+
+        # json_article は dict 型
+        for json_article in json:
+            # dict からタイトルとurlを取り出して
+            # QiitaArticle クラスのオブジェクトを作成
+            qiita_article = QiitaArticle(
+                json_article["title"],
+                json_article["url"],
+            )
+            qiita_articles.append(qiita_article)
+        return qiita_articles
+
+
+class QiitaArticle:
+
+    def __init__(self, title, url):
+        self.title = title
+        self.url = url

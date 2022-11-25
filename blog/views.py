@@ -15,10 +15,11 @@ def index(request):
 
     # qiita API へのリクエスト処理を追加
     qiita_api = QiitaApiClient()
-    qiita_api.get_django_articles() 
+    qiita_articles = qiita_api.get_django_articles() 
 
     return render(request, "blog/index.html", {
         "articles": articles,
+        "qiita_articles": qiita_articles,
     })
 
 def detail(request):
