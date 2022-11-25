@@ -5,9 +5,14 @@ class QiitaApiClient:
 
     def get_django_articles(self):
         # get リクエストを送る
+        # e09e6d53707a4825b41b20bf96c891deeb95fb9f
         response = requests.get(
             "https://qiita.com/api/v2/tags/django/items",
+            headers={"Authorization": "Bearer asdfg"}
         )
+
+        if response.status_code != 200:
+            raise RuntimeError("Qiitaの記事が取得できませんでした")
         
         # 配列の初期化
         qiita_articles = []

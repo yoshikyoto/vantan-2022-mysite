@@ -27,6 +27,9 @@
 {% endfor %}
 
 <h2>Qiitaの記事一覧</h2>
+{% if is_qiita_error %}
+    Qiitaから記事を取得できませんでした
+{% endif %}
 {% for qiita_article in qiita_articles %}
     <div>
         <a href="{{ qiita_article.url }}">
