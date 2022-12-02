@@ -4,7 +4,7 @@ from django.views import View
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from blog.models import Article
+from blog.models import Article, Comment
 from blog.qiita import QiitaApiClient
 import json
 
@@ -154,4 +154,24 @@ class ArticleApiView(View):
 
         return JsonResponse({
             "message": "記事の投稿に成功しました"
+        })
+
+
+class CommentApiView(View):
+    def post(self, request, article_id):
+        json_dict = json.loads(request.body)
+
+        # 渡された article_id から article を取得
+        article = Article.objects.get(id=article_id)
+
+        # article からコメントを作成して保存
+        comment = Comment(
+            body=json_dict["body"],
+            article=article,
+            user=request.user
+        )
+        comment.save()
+
+        return JsonResponse({
+            "message": "コメントの投稿に成功しました"
         })
