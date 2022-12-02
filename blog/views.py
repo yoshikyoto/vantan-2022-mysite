@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from blog.models import Article
 from blog.qiita import QiitaApiClient
+import json
 
  
 def index(request):
@@ -111,7 +112,6 @@ class ArticleView(View):
             "article": article,
         })
 
-
 class ArticleApiView(View):
     
     def get(self, request):
@@ -135,3 +135,23 @@ class ArticleApiView(View):
             "articles": dict_articles,
         }
         return JsonResponse(json)
+
+
+    # post を追加
+    def post(self, request):
+        # リクエストボディに入っている JSON 形式の文字列を
+        # list や dict に変換してくれる
+        json_dict = json.loads(request.body)
+
+        # 保存は今まで通り
+        article = Article(
+            title=json_dict["title"],
+            body=json_dict["body"],
+            # user には、現在ログイン中のユーザーをセットする
+            user=request.user,
+        )
+        article.save()
+
+        return JsonResponse({
+            "message": "記事の投稿に成功しました"
+        })
