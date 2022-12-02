@@ -175,3 +175,42 @@ class CommentApiView(View):
         return JsonResponse({
             "message": "コメントの投稿に成功しました"
         })
+
+
+class ArticleDetailView(View):
+
+    def get(self, request, article_id):
+        # article_id から記事の情報を取得する
+        article = Article.objects.get(id=article_id)
+
+        # dict 形式に変換したコメントが複数入っているリスト
+        dict_comments = []
+
+        # Comment クラスの方の related_name をつけると、その名前を使って、
+        # Article クラスからコメント一覧が取得できるようになります
+        # （ややこしいので気をつけてください）
+        # コメント一覧を取得して、dict 形式に変換していきます
+        for comment in article.comments.all():
+            # dict 形式に変換
+            dict_comment = {
+                "id": comment.id,
+                "body": comment.body,
+                "user": {
+                    "id": comment.user.id,
+                    "username": comment.user.username,
+                }
+            }
+            dict_comments.append(dict_comment)
+
+        return JsonResponse({
+            "article": {
+                "id": article.id,
+                "title": article.title,
+                "user": {
+                    "id": article.user.id,
+                    "username": article.user.username,
+                },
+                # comments の部分にはさっき作成した dict のリストを入れます
+                "comments": dict_comments,
+            }
+        })

@@ -18,7 +18,7 @@ class Comment(models.Model):
 
     # コメントを付けた記事
     # 記事が消えたらコメントも消える（CASCADE）
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comments")
 
     # コメントを書いた人
     # ユーザーが消えたらコメントも消える（CASCADE）
