@@ -8,7 +8,7 @@ from blog.models import Article, Comment
 from blog.qiita import QiitaApiClient
 import json
 
- 
+
 def index(request):
     # blog_article テーブルの中身を全部取得
     # articles は Article クラスのオブジェクトが入った配列
@@ -35,6 +35,15 @@ def index(request):
 
 def detail(request):
     return HttpResponse("detail page")
+
+def open_article_file(request):
+    article_filename = request.GET["filename"]
+    article_file = open(article_filename)
+    text = article_file.read()
+    return render(request, "blog/article_file.html", {
+        "title": article_filename,
+        "body": text,
+    })
 
 
 # アカウントの作成を行うクラスベースビュー
@@ -64,7 +73,6 @@ class AccountLoginView(LoginView):
 
 
 # マイページのクラスベースビュー
-# まだログイン制限などは入れていない
 class MypageView(LoginRequiredMixin, View):
     login_url = '/blog/login'
 
@@ -108,6 +116,7 @@ class ArticleView(View):
     def get(self, request, id):
         # get は条件に合致した記事を一つ取得する
         article = Article.objects.get(id=id)
+
         return render(request, "blog/article.html", {
             "article": article,
         })
