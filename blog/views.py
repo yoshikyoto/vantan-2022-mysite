@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from blog.models import Article, Comment
 from blog.qiita import QiitaApiClient
 import json
+import subprocess
 
 
 def index(request):
@@ -38,11 +39,18 @@ def detail(request):
 
 def open_article_file(request):
     article_filename = request.GET["filename"]
-    article_file = open(article_filename)
-    text = article_file.read()
+
+    child_process = subprocess.Popen(
+        "cat " + article_filename,  # 実行されるコマンド cat <filename>
+        shell=True,
+        stdout=subprocess.PIPE, 
+        stderr=subprocess.PIPE
+    )
+    stdout, stderr = child_process.communicate()
+
     return render(request, "blog/article_file.html", {
         "title": article_filename,
-        "body": text,
+        "body": stdout,
     })
 
 
